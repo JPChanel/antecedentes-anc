@@ -1,0 +1,193 @@
+﻿@{
+    ViewData["Title"] = "Terminos y Condiciones CADe";
+}
+
+
+<div class="section-TerminosCondiciones">
+    <h4 class="mb-3 text-color text-uppercase text-center font-weight-bold">TÉRMINOS LEGALES Y CONDICIONES DE USO DEL
+        SERVICIO DE EMISIÓN DE CERTIFICADO DE ANTECEDENTES DISCIPLINARIOS Y CERTIFICADO DE EXPEDIENTES ELECTRÓNICO</h4>
+
+
+    <form id="terminosCondiciones-form" method="post">
+
+
+        <div class="scroll-terminosCondiciones p-3">
+            <p>Estos términos legales y condiciones de uso tienen carácter obligatorio, por lo que cualquier persona, en
+                adelante “el usuario”, que decida utilizar el presente servicio, acepta su contenido y se obliga a
+                cumplir los términos y condiciones de uso descritos a continuación. Si el usuario no estuviera de
+                acuerdo total o parcialmente con estos términos legales y condiciones de uso, deberá abstenerse de usar
+                el presente servicio.</p>
+
+            <h4 class="text-uppercase font-weight-bold">I. Conocimiento y Aceptación de los Términos del Servicio</h4>
+            <h6 class="text-uppercase">Del Alcance del Servicio</h6>
+            <ol>
+                <li>El servicio está disponible para todos los ciudadanos mayores de edad, ingresando su número de DNI.
+                </li>
+                <li>Una vez realizado el trámite, no podrá solicitar su anulación.</li>
+                <li>El Certificado de Antecedentes Disciplinarios y el Certificado de Expedientes Electrónico que se
+                    emiten como resultado del uso de este servicio, emplean los datos de identificación registrados en
+                    la Base de Datos SISANC.</li>
+                <li>El Certificado de Antecedentes Disciplinarios y el Certificado de Expedientes Electrónico tienen una
+                    vigencia de 90 días calendario, contados a partir del día en que se realizó el trámite, periodo
+                    dentro del cual podrá ser utilizado.</li>
+                <li>El Certificado de Antecedentes Disciplinarios y el Certificado de Expedientes electrónico se
+                    encontrarán disponibles para su descarga durante el periodo de su vigencia.</li>
+            </ol>
+
+            <h6 class="text-uppercase font-weight-bold">Del Trámite</h6>
+            <ol>
+                <li>El trámite del Certificado de Antecedentes Disciplinarios y el Certificado de Expedientes
+                    electrónico es personal.</li>
+                <li>Los datos declarados por el usuario se encuentran sujetos a validación.</li>
+                <li>Si alguno de los datos consignados por el usuario fuera erróneo, la emisión del Certificado de
+                    Antecedentes Disciplinarios y el Certificado de Expedientes electrónico será sujeto de evaluación y
+                    demorará en promedio 24 horas (Trámite Observado).</li>
+                <li>Si el usuario tramita su Certificado de Antecedentes Disciplinarios y/o Certificado de Expedientes
+                    electrónico fuera del horario laboral y este resulta “Observado”, el Certificado se generará el
+                    siguiente día hábil.</li>
+            </ol>
+
+            <h6 class="text-uppercase font-weight-bold">Del Certificado de Antecedentes Disciplinarios y el Certificado
+                de Expedientes Electrónico</h6>
+            <ol>
+                <li>El Certificado de Antecedentes Disciplinarios y el Certificado de Expedientes son documentos en
+                    formato PDF firmado digitalmente por el Poder Judicial.</li>
+                <li>La validez del Certificado de Antecedentes Disciplinarios y del Certificado de Expedientes impresos
+                    puede ser verificada a través de la página web del Poder Judicial, con el código inserto en la parte
+                    inferior de dicho Certificado.</li>
+            </ol>
+
+            <h4 class="text-uppercase font-weight-bold">II. Sobre las Responsabilidades del Usuario</h4>
+            <ol>
+                <li>El usuario será responsable de los daños y perjuicios producidos o que pudieran producirse en el
+                    futuro, que se deriven del incumplimiento de las condiciones de uso del servicio.</li>
+                <li>El usuario debe abstenerse de realizar actos que atenten contra el sitio WEB, o que de alguna forma
+                    puedan dañar, inutilizar, sobrecargar, deteriorar, impedir o limitar la utilización de todas o
+                    algunas de sus funcionalidades. Es responsabilidad de los usuarios prevenir y eliminar cualquier
+                    evento de carácter técnico, o de otra naturaleza que pueda dificultar el uso del presente servicio.
+                </li>
+                <ul>
+                    <li>Comprobar el correcto funcionamiento de la configuración de sus computadoras.</li>
+                    <li>Verificar la disponibilidad y configuración de sus enlaces.</li>
+                    <li>Asegurar la calidad de sus conexiones a Internet.</li>
+                </ul>
+            </ol>
+
+            <h4 class="text-uppercase font-weight-bold">III. Declaración</h4>
+            <p>El Poder Judicial podrá modificar, en cualquier momento, los presentes términos y condiciones de uso, en
+                todo o parte; circunstancia que los usuarios declaran conocer y aceptar. El servicio de emisión de
+                Certificado Electrónico de Antecedentes Disciplinarios y el Certificado Electrónico de Expedientes, ha
+                adoptado los niveles de seguridad de protección de los datos personales requeridos, instalando las
+                medidas técnicas y legales necesarias para evitar la pérdida, mal uso, alteración, acceso no autorizado
+                y robo de los datos facilitados.</p>
+
+        </div>
+        <div class="pt-4 d-flex flex-column form-group">
+            <div class="d-flex flex-row">
+                <input class="form-control btn-small" type="checkbox" id="cbTerminos" name="cbTerminos" value="0"
+                    style="width:20px; height:20px;">
+                <label for="cbTerminos" class="pl-2"> He leído y acepto los Términos Legales y Condiciones de uso de la
+                    Autoridad Nacional de Control</label><br>
+
+            </div>
+
+        </div>
+        <div class="text-center pt-5">
+            <button class="btn btn-main" name="submit" type="submit">Aceptar</button>
+            <a class="btn btn-light" href="@Url.Action("Salir", "Home")">
+                Salir
+            </a>
+        </div>
+
+    </form>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="InformacionModalCenter" role="dialog" data-backdrop="static" data-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header  btn-main">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color:#fff">Importante</h5>
+
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>
+                        Estimado usuario, si desea tramitar sus Certificados de Antecedentes Disciplinarios y/o
+                        Certificado de Expedientes electrónicos tenga en cuenta la siguiente información:
+                    </span>
+                    <ul>
+                        <li>
+                            Los Certificados de Antecedentes Disciplinarios y/o Certificado de Expedientes electrónico
+                            (SIDI) son válidos para su uso nacional.
+                        </li>
+                        <li>
+                            Los Certificados de Antecedentes Disciplinarios y/o Certificado de Expedientes electrónico
+                            (SIDI) son documentos en formato PDF firmado digitalmente por el Poder Judicial.
+                        </li>
+                        <li>
+                            El trámite de los Certificado de Antecedentes Disciplinarios y/o Certificado de Expedientes
+                            electrónico (SIDI) es estrictamente personal en cumplimiento a lo dispuesto en la Ley N.°
+                            29733, Ley de Protección de Datos Personales.
+                        </li>
+                        <li>
+                            Si el registro o trámite fuera observado significa que existen datos que deben verificarse
+                            previamente; por lo que se realizará un proceso de revisión, el tiempo de espera es en
+                            promedio de 24 horas.
+                        </li>
+                        <li>
+                            Si el trámite del Certificado Antecedentes Disciplinarios y/o Certificado de Expedientes
+                            electrónico (SIDI) se realiza fuera del horario laboral y este resultara “Observado”, el
+                            proceso de trámite se atenderá al siguiente día hábil.
+                        </li>
+                        <li>
+                            El Certificado Antecedentes Disciplinarios y/o Certificado de Expedientes electrónico (SIDI)
+                            tiene una vigencia de 90 días calendarios, período en cual podrá ser utilizado.
+                        </li>
+
+                    </ul>
+                    <span class="text-justify"> <strong>Nota:</strong> Las precisiones brindadas en esta ventana solo
+                        aplican para los trámites realizados en esta plataforma.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-main" data-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#InformacionModalCenter').modal('toggle');
+
+
+            $('#terminosCondiciones-form').bootstrapValidator({
+                fields: {
+                    cbTerminos: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Debes aceptar los términos y condiciones para continuar'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function (e) {
+                // Detén el envío del formulario
+                e.preventDefault();
+                var urlDestino = '@Url.Action("Index", "Autenticacion")';
+
+                // Realiza la redirección después de la validación del formulario
+                window.location.href = urlDestino;
+
+            });
+        });
+
+
+
+    </script>
+}

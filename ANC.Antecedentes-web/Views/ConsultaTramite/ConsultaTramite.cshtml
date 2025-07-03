@@ -1,0 +1,283 @@
+﻿@{
+    ViewData["Title"] = "Consulta de Trámite CADe";
+}
+@using ANC.Entidades;
+
+
+<div class="section-consulta-tramite text-center">
+    @Html.AntiForgeryToken()
+    <form class="container" id="validacion-form-consulta">
+        <div class="row text-left">
+
+            <div class="col col-md-3 form-group">
+                <label>Tipo de documento:<span class="text-color">(*)</span></label>
+                <select class="form-control" id="tipo_documento" name="tipo_documento">
+                    
+                    @foreach (PetTipoDocBE item in ViewBag.lstTipoDoc)
+                    {
+                        if (@item.codtipodoc == 2)
+                        {
+                            <option value="@item.codtipodoc">@item.descripcion</option>
+                        }
+                       
+                    }
+
+                </select>
+            </div>
+            <div class="col col-md-3 form-group">
+                <label>Número de Documento:<span class="text-color">(*)</span></label>
+                <input type="text" class="form-control" name="num_documento" id="num_documento" maxlength="8"  onkeypress="soloNumerosValidaVarios(this, event, 0)" required>
+            </div>
+            <div class="col col-md-3 form-group">
+                <label>N° de Trámite:<span class="text-color">(*)</span></label>
+                <input type="text" class="form-control" name="nro_registro" id="nro_registro" onkeyup="mayus(this);" maxlength="7" placeholder="C / T ------" required>
+            </div>
+            <div class="col col-md-3 form-group">
+                <label>Año:<span class="text-color">(*)</span></label>
+
+                <select class="form-control" id="cbanio" name="cbanio">
+
+                    @foreach (ListAnioBE item in ViewBag.lstAnio)
+                    {
+
+                        <option value="@item.rn_anio">@item.rn_anio</option>
+                        
+
+                    }
+
+                </select>
+            </div>
+
+        
+            <div class="col col-md-3 form-group">
+                <label>Captcha  <span class="text-color">(*)</span></label>
+                <input type="text" class="form-control" placeholder="Ingrese Codigo Captcha" name="textCaptcha" id="textCaptcha" maxlength="5"  onkeypress="soloNumerosValidaVarios(this, event, 0)" required>
+            </div>
+
+            <div class="col col-md-3 form-group">
+                <label>&nbsp;</label>
+                <div style="display: flex;flex-wrap: nowrap;">
+
+                    <div>
+                        <img src="" id="imgCaptcha" width="200" height="50"/>
+
+                    </div>
+                    <div class="btn-reload">
+
+                        <button id="id-reload" type="button" onclick="cargarCapchaImagen()"  style="position:relative"><i class="ti-reload"></i> </button>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col col-md-12">
+                <span>Todos los campos con <span class="text-color">(*)</span> son necesarios para atender correctamente su solicitud.</span>
+                <div class="pt-4">
+                    <button class="btn  btn-main" id="btn-registrar" type="submit"> Continuar </button>
+
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-dark"> Salir </a>
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        var UrlAuto = {
+            CargarCaptchaImage: { "link": "@Url.Action("CargarCaptchaImage", "Autenticacion")" },
+            ConsultarRegistro: { "link": "@Url.Action("ConsultarRegistro", "ConsultaTramite")" }
+        };
+        window.onload = cargarCapchaImagen();
+
+        function cargarCapchaImagen() {
+            $.ajax({
+                type: 'GET',
+                url: UrlAuto.CargarCaptchaImage.link,
+                async: false,
+                success: function (data) {
+                    if (data != null) {
+                        $("#imgCaptcha").attr('src', data.valor);
+                    }
+                }
+            });
+        }
+
+        $('#validacion-form-consulta').bootstrapValidator({
+            fields: {
+                tipo_documento: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Seleccione Tipo de Documento'
+                        }
+                    }
+                },
+                num_documento: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Ingrese el Numero de Documento'
+                        }
+                    }
+                },
+                nro_registro: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Ingrese el Numero de Trámite '
+                        },
+               
+                        callback: {
+                            message: 'El formato debe ser una letra seguida de 6 números',
+                            callback: function (value, validator, $field) {
+                               
+                                if (value && value.length === 7) {
+                                    var primeraLetra = value.charAt(0);
+                                    var numeros = value.substring(1);
+                                    var letraValida = /^[A-Za-z]$/.test(primeraLetra);
+                                    var numerosValidos = /^[0-9]{6}$/.test(numeros);
+                                    return letraValida && numerosValidos;
+                                }
+
+                                return false; // No cumple con el formato esperado
+                            }
+                        }
+                    }
+                },
+                cbanio: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Seleccione el año de Trámite'
+                        }
+                    }
+                },
+              
+                textCaptcha: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Ingrese Codigo Captcha'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function (e) {
+            e.preventDefault();
+
+            ConsultarDatos();
+
+        });
+        function ConsultarDatos() {
+            var formData = {};
+            formData.cbTipoDocumento = $("#cbTipoDocumento").val();
+            formData.num_documento = $("#num_documento").val();
+            formData.nro_registro = $("#nro_registro").val();
+            formData.anio = $("#cbanio").val();
+         
+            formData.textCaptcha = $("#textCaptcha").val();
+
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: UrlAuto.ConsultarRegistro.link,
+                data: JSON.stringify(formData),
+                processData: false,
+                contentType: 'application/json',
+                beforeSend: function () {
+                    $("#cargando").show();
+                },
+                success: function (data) {
+                    debugger;
+                    $("#cargando").hide();
+
+
+                    if (data.redirectTo) {
+
+                        window.location.href = data.redirectTo;
+                    } else {
+                        if (data.codigo != 0) {
+                            alerta('A', data.valor);
+                            $("#textCaptcha").val("");
+                        }
+                    }
+
+                    cargarCapchaImagen();
+                },
+                error: function (request, status, error) {
+                    $("#cargando").hide();
+                    alerta('E', "Surgió un problema. " + error);
+                    cargarCapchaImagen();
+                    $("#textCaptcha").val("");
+                }
+            });
+        
+        
+        
+        }
+
+
+
+        
+        function completarConCeros(numero) {
+
+            let letraInicial = numero.charAt(0);
+            let numerosRestantes = numero.slice(1);
+
+            let numerosCompletados = numerosRestantes.padStart(6, '0');
+
+            let valorCompleto = letraInicial + numerosCompletados;
+
+            return valorCompleto;
+        }
+        function validarFormatoRegistro(value) {
+         
+            if (value && value.length === 7) {
+
+                var primeraLetra = value.charAt(0);
+                var numeros = value.substring(1);
+
+                var letraValida = /^[A-Za-z]$/.test(primeraLetra);
+                var numerosValidos = /^[0-9]{6}$/.test(numeros);
+
+                return letraValida && numerosValidos;
+            }
+
+            return false; 
+        }
+
+        let input = document.getElementById('nro_registro');
+
+
+        input.addEventListener('blur', function (event) {
+
+            let valorInput = event.target.value;
+
+            let patron = /^[A-Za-z]\d{0,6}$/;
+            if (!patron.test(valorInput)) {
+
+                return;
+            }
+
+            let valorCompletado = completarConCeros(valorInput);
+
+            event.target.value = valorCompletado;
+         
+            let esValido = validarFormatoRegistro($('#nro_registro').val())
+
+            let bootstrapValidator = $('#validacion-form-consulta').data('bootstrapValidator');
+
+            if (bootstrapValidator) {
+                // Actualizar el estado de la validación para el campo nro_registro
+                bootstrapValidator.updateStatus('nro_registro', esValido ? 'VALID' : 'INVALID');
+            }
+        });
+    </script>
+}

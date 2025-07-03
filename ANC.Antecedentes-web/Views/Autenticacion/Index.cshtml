@@ -1,0 +1,655 @@
+﻿@using ANC.Entidades;
+
+
+@{
+    ViewData["Title"] = "Validacion de Datos CADe";
+}
+
+<article>
+    <div id="timer" data-tiempo-restante="@ViewBag.TiempoRestante" data-url="@Url.Action("Salir", "Home")"></div>
+</article>
+
+<div class="sub-form p-0 section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                @Html.AntiForgeryToken()
+                <form id="validacion-form-main">
+                    <div class="widget form formulario py-1">
+
+                        <div class="">
+
+                       
+                            <div class=" form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Tipo de documento:<span class="text-color">(*)</span></label>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="cbTipoDocumento" name="cbTipoDocumento">
+                                        <option value="">Seleccione Tipo Documento</option>
+                                        
+                                        @foreach (PetTipoDocBE item in ViewBag.lstTipoDoc)
+                                        {
+                                            if (@item.codtipodoc == 2)
+                                            {
+                                                <option value="@item.codtipodoc">@item.descripcion</option>
+                                            }
+                                          
+                                        }
+                                        <option value="0">DNI ELECTRÓNICO</option>
+                                    </select>
+
+
+                                </div>
+
+                            </div>
+                            <div class=" form-group row ">
+
+
+                                <label class="col-sm-6 col-form-label ">Número de documento:<span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+
+                                    <input type="text" class="form-control" name="txtNumDoc" id="txtNumDoc" onkeyup="mayus(this);" maxlength="8" onkeypress="soloNumerosValidaVarios(this, event, 0)">
+
+                                </div>
+                            </div>
+                            <div class=" form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Código Validación:  <span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="txtCodValid" id="txtCodValid" maxlength="1" onkeypress="soloNumerosValidaVarios(this, event, 0)">
+
+                                </div>
+                            </div>
+                            <div class=" form-group row ">
+
+
+                                <label class="col-sm-6 col-form-label ">Fecha de Emisión del documento:<span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" name="FecEmisionDoc" id="FecEmisionDoc">
+
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Fecha Nacimiento: <span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="date" class="form-control" name="FecNacimiento" id="FecNacimiento">
+                                </div>
+
+                            </div>
+                            <div class=" form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Ubigeo: <span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="txtUbigeo" id="txtUbigeo"  maxlength="6" onkeypress="soloNumerosValidaVarios(this, event, 0)">
+                                </div>
+                            </div>
+                          
+                          
+                            <div class="form-group row   " id="DepartamentoNac">
+
+                                <label class="col-sm-6 col-form-label ">Departamento de Nacimiento:  <span class="text-color">(*)</span></label>
+                                <div class="col-sm-6">
+
+                                    <select class="form-control" id="cbDepartamento" name="cbDepartamento">
+                                        <option value="">- Seleccione Departamento - </option>
+                                        @foreach (DepartamentoBE item in ViewBag.lstDepartamento)
+                                        {
+                                            <option value="@item.cod_departamento">@item.des_nombre</option>
+                                        }
+                                    </select>
+
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row  " id="ProvinciaNac">
+
+                                <label class="col-sm-6 col-form-label ">
+                                    Provincia de Nacimiento:  <span class="text-color">(*)</span>
+                                </label>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="cbProvincia" name="cbProvincia">
+                                        <option value="">- Seleccione Provincia - </option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group row  " id="DistritoNac">
+
+                                <label class="col-sm-6 col-form-label ">Distrito de Nacimiento:  <span class="text-color">(*)</span></label>
+                                <div class="col-sm-6">
+
+                                    <select class="form-control" id="cbDistrito" name="cbDistrito">
+                                        <option value="">- Seleccione Distrito - </option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Teléfono Móvil:  <span class="text-color">(*)</span></label>
+                                <div class="col-sm-6">
+
+                                    <input type="text" class="form-control" name="txtTelefono" id="txtTelefono" onkeypress="soloNumerosValidaVarios(this, event, 0)" maxlength="9">
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Correo personal:  <span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" name="txtEmail" id="txtEmail" onkeyup="mayus(this);">
+                                </div>
+
+                            </div>
+                            <div class="form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Repetir correo:  <span class="text-color">(*)</span></label>
+                                <div class="col-sm-6">
+
+                                    <input type="email" class="form-control" name="txtEmailconfirm" id="txtEmailconfirm" onkeyup="mayus(this);">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Imagen Captcha</label>
+                                <div class="col-sm-6">
+
+                                    <div style="display: flex;flex-wrap: nowrap;">
+
+                                        <div>
+                                            <img src="" id="imgCaptcha" width="245" height="50" />
+
+                                        </div>
+                                        <div class="btn-reload">
+
+                                            <button id="id-reload" type="button" onclick="cargarCapchaImagen()" style="position:relative"><i class="ti-reload"></i> </button>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="  form-group row ">
+
+                                <label class="col-sm-6 col-form-label ">Captcha  <span class="text-color">(*)</span></label>
+
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" placeholder="Ingrese Codigo Captcha" name="textCaptcha" id="textCaptcha" maxlength="5" onkeypress="soloNumerosValidaVarios(this, event, 0)">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span>Todos los campos con <span class="text-color">(*)</span> son necesarios para atender correctamente su solicitud.</span>
+                                <div class="pt-4">
+                                    <button class="btn  btn-main" id="btn-registrar" type="submit"> Validar </button>
+
+                                    <a href="@Url.Action("Salir", "Home")" class="btn btn-outline-dark"> Regresar </a>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-5">
+                <div class="bd-example">
+
+                    <ul class="nav nav-pills pb-1">
+                        <li class="nav-item" >
+                            <a class="nav-link active" data-toggle="pill" id="Tab_dnie" href="#dnie">Dni Electrónico</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="pill" href="#dni" id="Tab_dni">Dni Azul</a>
+                        </li>
+                      
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane container active" id="dnie">
+                            <figure>
+                                <img id="dni_electronico" class="img-responsive" src="~/images/dni/dnie01/dnie-00.webp" alt="Dni electronico" width="385" height="238">
+                               
+                            </figure>
+                            <figure>
+                               
+                                <img id="dni_electronico2" class="img-responsive" src="~/images/dni/dnie02/dniee-00.webp" alt="Dni electronico" width="385" height="238">
+                            </figure>
+                        </div>
+                        <div class="tab-pane container fade" id="dni">
+                            <figure>
+                                <img id="dni_azul" class="img-responsive" src="~/images/dni/azul/dni-00.webp" alt="Dni" width="385" height="238">
+
+                            </figure>
+                        </div>
+                       
+                    </div>
+
+                </div>
+            </div>
+        </div>
+   
+    </div>
+
+
+</div>
+@section scripts {
+    <script type="text/javascript">
+
+           function desactivarCopiarPegar(campo) {
+            campo.on('copy paste', function (event) {
+                event.preventDefault();
+            });
+        }
+        $(document).ready(function() {
+            // Iterar sobre las celdas de la tabla DataTables
+
+            $('#validacion-form-main input[type="email"]').each(function () {
+                        desactivarCopiarPegar($(this));
+               });
+        });
+
+        var formularioValidado = true;
+        var UrlAuto = {
+            CargarCaptchaImage: { "link": "@Url.Action("CargarCaptchaImage", "Autenticacion")" },
+            ObtenerProvincia: { "link": "@Url.Action("ObtenerProvincia", "Autenticacion")" },
+            ObtenerDistrito: { "link": "@Url.Action("ObtenerDistrito", "Autenticacion")" },
+            ValidarDatos: { "link": "@Url.Action("ValidarDatos", "Autenticacion")" },
+        };
+        window.onload = cargarCapchaImagen();
+        window.onload = timer();
+        function cargarCapchaImagen() {
+            $.ajax({
+                type: 'GET',
+                url: UrlAuto.CargarCaptchaImage.link,
+                async: false,
+                success: function (data) {
+                    if (data != null) {
+                        $("#imgCaptcha").attr('src', data.valor);
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("#cbDepartamento").change(function () {
+                var IdDepartamento = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: UrlAuto.ObtenerProvincia.link + "?IdDepartamento=" + IdDepartamento,
+                    async: false,
+                    success: function (data) {
+
+                        if (data != null) {
+
+                            $("#cbProvincia").empty();
+                            $("#cbProvincia").append($('<option>', {
+                                value: "#",
+                                text: "- Seleccione Provincia -"
+                            }));
+                            $.each(data, function (index, item) {
+
+                                console.log(item.cod_provincia, item.des_nombre);
+                                $("#cbProvincia").append($('<option>', {
+                                    value: item.cod_provincia,
+                                    text: item.des_nombre
+                                }));
+                            });
+                        }
+                    }
+                });
+            });
+            $("#cbProvincia").change(function () {
+
+                var IdDepartamento = $("#cbDepartamento").val();
+                var IdProvincia = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: UrlAuto.ObtenerDistrito.link + "?IdDepartamento=" + IdDepartamento + "&IdProvincia=" + IdProvincia,
+                    async: false,
+                    success: function (data) {
+
+                        if (data != null) {
+
+                            $("#cbDistrito").empty();
+                            $("#cbDistrito").append($('<option>', {
+                                value: "",
+                                text: "- Seleccione Distrito -"
+                            }));
+                            $.each(data, function (index, item) {
+                                $("#cbDistrito").append($('<option>', {
+                                    value: item.cod_distrito,
+                                    text: item.des_nombre
+                                }));
+                            });
+                        }
+                    }
+                });
+            });
+
+      
+
+            $("#cbTipoDocumento").change(function () {
+
+
+                var cbTipoDocumento = $(this).val();
+                if (cbTipoDocumento == "0") {
+                    document.getElementById("Tab_dnie").classList.add("active");
+                    document.getElementById("Tab_dni").classList.remove("active");
+
+                    document.getElementById("dnie").classList.add("active");
+                    
+                    document.getElementById("dni").classList.remove("active");
+
+                    document.getElementById("Tab_dni").classList.add('disabled');
+                }
+                else if (cbTipoDocumento == "2") {
+
+                    document.getElementById("Tab_dnie").classList.remove("active");
+                    document.getElementById("Tab_dni").classList.add("active");
+
+                     document.getElementById("dni").classList.add("active");
+
+                    document.getElementById("dnie").classList.remove("active");
+                    document.getElementById("dni").classList.add("show");
+
+                    document.getElementById("Tab_dnie").classList.add('disabled');
+                }else{
+                    document.getElementById("Tab_dnie").classList.remove('disabled');
+                    document.getElementById("Tab_dni").classList.remove('disabled');
+                }
+            });
+
+            $('#validacion-form-main').bootstrapValidator({
+                fields: {
+                    cbTipoDocumento: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Seleccione Tipo de Documento'
+                            }
+                        }
+                    },
+                    txtNumDoc: {
+                        validators: {
+                            notEmpty: {
+                                message: 'EL número de documento es requerido'
+                            }
+                        }
+                    },
+                    FecEmisionDoc: {
+                        validators: {
+                            notEmpty: {
+                                message: 'La fecha de emisión de documento es requerido'
+                            }
+                        }
+                    },
+                    FecNacimiento: {
+                        validators: {
+                            notEmpty: {
+                                message: 'La fecha de nacimiento es requerido'
+                            }
+                        }
+                    },
+                    txtUbigeo: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El Ubigeo es requerido'
+                            }
+                        }
+                    },
+                    txtCodValid: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El codigo de Validación es requerido'
+                            }
+                        }
+                    },
+                   
+                    cbDepartamento: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Seleccione el departamento'
+                            }
+                        }
+                    },
+                    cbProvincia: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Seleccione la provincia'
+                            }
+                        }
+                    },
+                    cbDistrito: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Seleccione distrito'
+                            }
+                        }
+                    },
+                    txtTelefono: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El telefono es requerido'
+                            }
+                        }
+                    },
+                    txtEmail: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El correo electrónico es requerido'
+                            },
+                            emailAddress: {
+                                message: 'El correo electrónico no es válido'
+                            }
+                        }
+                    }
+                    ,
+                    txtEmailconfirm: {
+                        validators: {
+                            notEmpty: {
+                                message: 'El correo electrónico es requerido'
+                            },
+                            emailAddress: {
+                                message: 'El correo electrónico no es válido'
+                            }
+                        }
+                    }
+                    ,
+                    textCaptcha: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Ingrese el Codigo Captcha'
+                            }
+
+                        }
+                    }
+
+                }
+            }).on('success.form.bv', function (e) {
+                // Detén el envío del formulario
+                e.preventDefault();
+                if ($("#txtEmail").val() != $("#txtEmailconfirm").val()) {
+                    alerta('A', "El correo ingresado y el correo de confirmacion no coinciden, verificar");
+                    return false;
+                }
+                formularioValidado = false;
+                // Ejecuta tu función después de que el formulario ha sido validado correctamente
+                ValidarDatos();
+            });
+        });
+
+        function ValidarDatos() {
+
+            var data = {};
+            data.cbTipoDocumento = $("#cbTipoDocumento").val();
+            data.txtNumDoc = $("#txtNumDoc").val();
+            data.FecEmisionDoc = $("#FecEmisionDoc").val();
+            data.FecNacimiento = $("#FecNacimiento").val();
+            data.txtnombrePadre = $("#txtnombrePadre").val();
+
+            data.txtUbigeo = $("#txtUbigeo").val();
+            data.txtCodValid = $("#txtCodValid").val();
+
+            data.cbDepartamento = $("#cbDepartamento").find('option:selected').text();
+            data.cbProvincia = $("#cbProvincia").find('option:selected').text();
+            data.cbDistrito = $("#cbDistrito").find('option:selected').text();
+
+
+
+            data.txtTelefono = $("#txtTelefono").val();
+            data.txtEmail = $("#txtEmail").val();
+            data.txtEmailconfirm = $("#txtEmailconfirm").val();
+            data.textCaptcha = $("#textCaptcha").val();
+           
+            $.ajax({
+                type: 'POST',
+                url: UrlAuto.ValidarDatos.link,
+                data: JSON.stringify(data),
+                processData: false,
+                contentType: 'application/json',
+                beforeSend: function () {
+                    $("#cargando").show();
+                },
+                success: function (data) {
+                    $("#cargando").hide();
+
+                    if (data.redirectTo) {
+                   
+                        limpiarFormulario();
+                        window.location.href = data.redirectTo;
+                    } else {
+                        if (data.codigo != "0") {
+                            alerta('A', data.valor);
+                            $("#textCaptcha").val("");
+                        }
+                    }
+                    cargarCapchaImagen();
+                },
+                error: function (request, status, error) {
+                    $("#cargando").hide();
+                    alerta('E', "Surgió un problema. " + error);
+                    cargarCapchaImagen();
+                    $("#textCaptcha").val("");
+                }
+            });
+        }
+
+    
+
+
+        // Obtener referencias a los elementos
+        var txtNumDoc = document.getElementById('txtNumDoc');
+        var cod_valid = document.getElementById('txtCodValid');
+        var FecEmisionDoc = document.getElementById('FecEmisionDoc');
+        var FecNacimiento = document.getElementById('FecNacimiento');
+        var ubigeo = document.getElementById('txtUbigeo');
+
+        var imagen_azul = document.getElementById('dni_azul');
+        var imagen_electronico = document.getElementById('dni_electronico');
+        var imagen_electronico2 = document.getElementById('dni_electronico2');
+        // Suscribirse a los eventos de enfoque y clic para los elementos
+        txtNumDoc.addEventListener('focus', function (event) {
+            manejarEventoInput(event, txtNumDoc);
+        });
+        cod_valid.addEventListener('focus', function (event) {
+            manejarEventoInput(event, cod_valid);
+        });
+        FecEmisionDoc.addEventListener('focus', function (event) {
+            manejarEventoInput(event, FecEmisionDoc);
+        });
+        FecNacimiento.addEventListener('focus', function (event) {
+            manejarEventoInput(event, FecNacimiento);
+        });
+        ubigeo.addEventListener('focus', function (event) {
+            manejarEventoInput(event, ubigeo);
+        });
+
+
+        txtNumDoc.addEventListener('click', function (event) {
+            manejarEventoInput(event, txtNumDoc);
+        });
+        cod_valid.addEventListener('click', function (event) {
+            manejarEventoInput(event, cod_valid);
+        });
+        FecEmisionDoc.addEventListener('click', function (event) {
+            manejarEventoInput(event, FecEmisionDoc);
+        });
+        FecNacimiento.addEventListener('click', function (event) {
+            manejarEventoInput(event, FecNacimiento);
+        });
+        ubigeo.addEventListener('click', function (event) {
+            manejarEventoInput(event, ubigeo);
+        });
+        // Función para manejar los eventos de enfoque y clic
+        function manejarEventoInput(event, elemento) {
+            // Dependiendo del ID del elemento, cambia la ruta de la imagen
+            switch (elemento.id) {
+                case 'txtNumDoc':
+                    imagen_azul.src = '/images/dni/azul/dni-01.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-01.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-01.webp';
+                    break;
+                case 'txtCodValid':
+                    imagen_azul.src = '/images/dni/azul/dni-02.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-02.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-02.webp';
+                    break;
+                case 'FecEmisionDoc':
+                    imagen_azul.src = '/images/dni/azul/dni-03.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-03.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-03.webp';
+                    break;
+                case 'FecNacimiento':
+                    imagen_azul.src = '/images/dni/azul/dni-04.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-04.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-04.webp';
+                    break;
+                case 'txtUbigeo':
+                    imagen_azul.src = '/images/dni/azul/dni-05.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-05.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-05.webp';
+                    break;
+                default:
+                    imagen_azul.src = '/images/dni/azul/dni-00.webp';
+                    imagen_electronico.src = '/images/dni/dnie01/dnie-00.webp';
+                    imagen_electronico2.src = '/images/dni/dnie02/dniee-00.webp';
+               
+                    break;
+            }
+        }
+        function limpiarFormulario() {
+            $("#cbTipoDocumento").val('');
+            $("#txtNumDoc").val('');
+            $("#FecEmisionDoc").val('');
+            $("#FecNacimiento").val('');
+            $("#txtnombrePadre").val('');
+            $("#txtUbigeo").val('');
+            $("#txtCodValid").val('');
+            $("#cbDepartamento").val('');
+            $("#cbProvincia").val('');
+            $("#cbDistrito").val('');
+            $("#txtTelefono").val('');
+            $("#txtEmail").val('');
+            $("#txtEmailconfirm").val('');
+            $("#textCaptcha").val('');
+        }
+
+       
+    </script>
+}

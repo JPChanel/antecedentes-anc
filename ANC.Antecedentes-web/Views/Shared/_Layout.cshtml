@@ -1,0 +1,182 @@
+﻿@{
+    string version_cade = "1.1.0.0";
+}
+
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SIDI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css" />
+
+
+    <meta property="og:site_name" content="Autoridad Nacional de Control">
+    <meta property="og:locale" content="es_PE">
+    <meta property="og:title" content="Cetificado de registros disciplinarios y expedientes">
+    <meta property="og:description" content="Cetificado de registros disciplinarios y expedientes">
+    <meta property="og:url" content="www.sidianc.pj.gob.pe">
+    <meta property="og:image:width" content="696">
+    <meta property="og:image:height" content="418">
+    <meta property="og:image:type" content="image/jpeg">
+
+    <meta name="dc.language" CONTENT="ES">
+    <meta name="dc.source" CONTENT="www.sidianc.pj.gob.pe">
+    <meta name="dc.relation" CONTENT="www.sidianc.pj.gob.pe">
+    <meta name="DC.title" lang="es" CONTENT="Cetificado de registros disciplinarios y expedientes">
+    <meta name="dc.keywords" CONTENT="sidi;Cetificado de registros disciplinarios y expedientes, Autoridad Nacional de Control ">
+    <meta name="dc.description" lang="es" CONTENT="Emisión de certificado de registros disciplinarios y expedientes de la autoridad nacional de control">
+    <meta name="DC.subject" lang="es" content="ANC, ANC Perú,reporte de antecednetes disciplinarios, y expedientes, autoridad nacional de control" />
+    <meta name="DC.creator" content="ANC | Autoridad Nacional de Control" />
+    <meta name="DC.publisher" content="Autoridad Nacional de Control" />
+    <meta name="GOOGLEBOT" content="index follow" />
+    <meta name="robots" content="index, follow" />
+    <meta name="lang" content="es" />
+
+    <meta name="author" content="ANC | Autoridad Nacional de Control" />
+    <meta name="image" content="@ViewBag.metaimg">
+    <meta name="description" content="@ViewBag.metadescrip">
+    <meta name="keywords" content="ANC; Autoridad Nacional de Control; sidie;Cetificado de registros disciplinarios y expedientes" />
+
+
+    <!-- Icon Font Css -->
+    <link rel="stylesheet" href="~/lib/themify/css/themify-icons.css">
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/magnific-popup/magnific-popup.css">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="~/lib/slick/slick.css">
+    <link rel="stylesheet" href="~/lib/slick/slick-theme.css">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+    <link rel="icon" href="~/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="loader" id="cargando" style="display:none">
+        <div class="loading-animation">
+            <div class="letters">
+                <span class="letter" data-delay="0">A</span>
+                <span class="letter" data-delay="0.5s">N</span>
+                <span class="letter" data-delay="1s">C</span>
+            </div>
+        </div>
+
+    </div>
+    <header class="navigation">
+        
+        <div id="navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg px-0 py-4">
+                           
+                                <a class="navbar-brand" href="@Url.Action("Index", "Home")"><img src="~/images/logo_white.png" width="220" alt="Logo Autoridad Nacional de Control"></a>
+
+                            
+
+                            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample09"
+                                    aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="fa fa-bars"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse text-center justify-content-end " id="navbarsExample09">
+                                <div class="d-flex justify-content-end align-items-baseline">
+
+                               
+                                <a href="@Url.Action("Index", "Home")">
+                                <div class="icon_cade">
+                                   
+                                        <i class="fa fa-laptop floatRight"></i>
+                                    
+                                   
+                                </div>
+                                </a>
+                             
+                                    <div class="loader">
+
+                                        <div class="loading-animation_cade">
+                                            <div class="letters_cade">
+                                                <span class="letter_cade"> S </span>
+                                                <span class="letter_cade"> I </span>
+                                                <span class="letter_cade"> D </span>
+                                            @*     <span class="letter_cade"> E </span> *@
+                                                <span class="letter_cade_e" data-delay="1.5s"> i </span>
+                                            </div>
+                                        </div>
+                                        <p class="version_cade">Versión @version_cade </p>
+                                    </div>
+
+
+                                </div>
+
+                               
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+  
+    <div class="container" id="data_element">
+        <main role="main" class="pb-3">
+            <section class="home-section section intro" >
+                <div class="section-title text-center">
+
+                    <h2 class="mt-3 content-title ">Certificado de Registros  Disciplinarios y Expedientes</h2>
+                </div>
+
+                 @RenderBody()
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer ">
+        <div class="container">
+        
+            <div class="footer-btm pt-4 text-center">
+                <p style="font-size:14px;line-height: 1.6em;"><strong style="font-family: serif;">&copy; @DateTime.Now.Year SIDI ANC - Versión @version_cade</strong> - Todos los derechos Reservados</p>
+                <p style="font-size:14px; line-height: 1.6em;">.: AUTORIDAD NACIONAL DE CONTROL DEL PODER JUDICIAL :.</p>
+
+            </div>
+        </div>
+    </footer>
+
+    <div id="scroll-to-top" class="scroll-to-top">
+        <span class="icon fa fa-angle-up"></span>
+    </div>
+ 
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/bootstrapValidator.min.js"></script>
+    <script src="~/lib/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="~/lib/slick/slick.min.js"></script>
+    <script src="~/lib/counterup/jquery.waypoints.min.js"></script>
+    <script src="~/lib/counterup/jquery.counterup.min.js"></script>
+    <script type='text/javascript' src='~/lib/bootbox/bootbox.min.js'></script>
+
+    <script src="~/js/GlobalScript.js"></script>
+
+    <script src="~/js/script.js"></script>
+
+ 
+    
+   
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+      
+        window.onbeforeunload = function (event) {
+            // Verificar si se ha completado la validación del formulario
+            if (formularioValidado) {
+                // Mostrar un mensaje de advertencia personalizado
+                var mensaje = " ¿Está seguro de que desea abandonar la página? Perdera los datos de la informacion ingresada";
+                event.returnValue = mensaje; 
+                return mensaje;
+
+            }
+        };
+    </script>
+</body>
+</html>

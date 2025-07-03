@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "OCMA.ERP.Comun": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:45127;http://localhost:45132"
+    }
+  }
+}

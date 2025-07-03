@@ -1,0 +1,110 @@
+﻿@{
+
+    ViewData["Title"] = "Certificado de antecedentes Disciplinarios";
+    int cont = 1;
+}
+@using ANC.Entidades;
+@model RespuestaReporteBE
+
+@if (Model.MensajeError != null)
+{
+    <div class="error-message">
+        <p>@Model.MensajeError</p>
+    </div>
+}
+else
+{
+
+    <section class="blog-pg-section section-padding">
+        <div class="container" style="padding-bottom:100px">
+            <div class="section-title-s2" data-aos="fade-right" data-aos-duration="3000">
+
+                <h4 class="mb-3 text-color text-uppercase text-justify">Portal de Visualización de documentos</h4>
+
+
+                <hr />
+            </div>
+            <div class="hero-container" >
+                <div class="container">
+
+                    <div class="widget">
+                        <ul class="nav nav-pills pb-1" role="tablist">
+                            
+                        @foreach (var item in Model.tipo_documentos)
+                        {
+                         
+                            string titulo = "";
+                                string active =(cont == 1) ? "active" :"";
+                                switch (item)
+                            {
+                                case "CD":
+                                    titulo = "CERTIFICADO DE ANTECEDENTES DISCIPLINARIOS";
+                                    break;
+
+                                case "CE":
+
+                                    titulo = "CERTIFICADO DE ANTECEDENTES DE EXPEDIENTES";
+                                    break;
+
+                                case "CO":
+                                    titulo = "OFICIO";
+
+                                    break;
+                                case "CC":
+                                    titulo = "CARGO DE INGRESO ADMINISTRATIVO";
+
+                                    break;
+                                case "CF":
+                                    titulo = "FORMULARIO UNICO DE TRÁMITES ADMINISTRATIVOS";
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
+                           
+                                <li class="nav-item">
+                                    <a class="nav-link @active" data-toggle="pill" href="#@item">@titulo</a>
+                                </li>
+
+                                cont++;
+
+                        }
+                            </ul>
+                        <div class="tab-content">
+                     
+                        @for (int i = 0; i < Model.ArchivosPDF.Count; i++)
+                        {
+                            byte[] pdfBytes = Model.ArchivosPDF[i];
+
+                                string active = (i == 0) ? "active" : "";
+                            string tipo_doc = Model.tipo_documentos[i];
+
+
+                                <!-- Tab panes -->
+
+                                <div id="@tipo_doc" class="container tab-pane @active">
+                                    <embed title="Certificado" src="data:application/pdf;base64,@Convert.ToBase64String(pdfBytes)" type="application/pdf" width="100%" height="1200">
+                                </div>
+                          
+                         
+
+                        }
+
+                            </div>
+           
+
+                </div>
+            </div>
+
+        </div>
+        <br />
+       
+    </div>
+  
+</section>
+
+
+   
+
+}

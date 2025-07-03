@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Tipo de Reporte";
+}
+
+<article>
+    <div id="timer" data-tiempo-restante="@ViewBag.TiempoRestante" data-url="@Url.Action("Salir", "Home")"></div>
+</article>
+<div class="section-consulta-tramite text-center">
+    @Html.AntiForgeryToken()
+    <form class="container" id="validacion-form-main">
+        <label>Seleccione el tipo de certificado que desea solicitar</label>
+        <div class=" text-left ">
+
+            <div class="row border-1 py-5 px-3">
+
+
+                <div class="col col-md-6 form-group">
+
+
+                    <div class="form-group ">
+                        <input type="checkbox" class="form-control-input" id="checkbox1" name="checkbox" value="1">
+                        <label class="col-form-label" for="checkbox1">
+                            Certificado de
+                            Antecedentes Disciplinarios
+                        </label>
+                    </div>
+
+
+                    <div class="form-group ">
+                        <input type="checkbox" class="form-control-input" id="checkbox2" name="checkbox" value="2">
+                        <label class="col-form-label" for="checkbox2">
+                            Certificado de
+                            Antecedentes de Expedientes
+                        </label>
+                    </div>
+                    
+                </div>
+
+            </div>
+            <div class="col col-md-12">
+               
+                <div class="pt-4">
+                    <button class="btn  btn-main" id="btn-registrar" onclick="ValidarDatos()" type="button"> Continuar </button>
+
+                    <a href="@Url.Action("Salir", "Home")" class="btn btn-outline-dark"> Salir </a>
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var formularioValidado = true;
+        var UrlAuto = {
+            ValidarRegistro: { "link": "@Url.Action("ValidarUsuario", "Autenticacion")" },
+           
+        };
+        window.onload = timer();
+
+        function ValidarDatos(){
+
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="checkbox"]');
+            var isChecked = false;
+
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    isChecked = true;
+                }
+            });
+
+            if (!isChecked) {
+                alerta('A', 'Por favor, selecciona al menos un tipo de reporte.');
+          
+            } else {
+
+                formularioValidado = false;
+
+                var formData = {};
+                formData._radioTipoRepo1 = $("input[id='checkbox1']:checked").val();
+                formData._radioTipoRepo2 = $("input[id='checkbox2']:checked").val();
+                $.ajax({
+                    type: 'POST',
+                    url: UrlAuto.ValidarRegistro.link,
+                    data: JSON.stringify(formData),
+                    processData: false,
+                    contentType: 'application/json',
+                    beforeSend: function () {
+                        $("#cargando").show();
+                    },
+                    success: function (data) {
+                   
+                        $("#cargando").hide();
+
+
+                        if (data.redirectTo) {
+                            limpiarCheckboxes();
+                            window.location.href = data.redirectTo;
+                        } else {
+                            if (data.codigo != 0) {
+                                alerta('A', data.valor);
+                           
+                            }
+                        }
+
+  
+                    },
+                    error: function (request, status, error) {
+                        $("#cargando").hide();
+                        alerta('E', "Surgió un problema. " + error);
+                  
+                        
+                    }
+                });
+            }
+        }
+        function limpiarCheckboxes() {
+            // Desmarcar el checkbox con id "checkbox1"
+            $("#checkbox1").prop("checked", false);
+
+            // Desmarcar el checkbox con id "checkbox2"
+            $("#checkbox2").prop("checked", false);
+        }
+        
+  
+    </script>
+
+} 

@@ -1,0 +1,496 @@
+﻿@using ANC.Entidades;
+@{
+    ViewData["Title"] = "Reporte Certificado CADe";
+
+
+    string title_Nro_tramite = (ViewBag.tipo_consulta != 2 && ViewBag.ViewOptions != 3) ? "N° de Registro de Antecedente :" : " N° Trámite Documentario :";
+
+    string title_certificado = (ViewBag.tipo_consulta != 2 && ViewBag.ViewOptions!=3) ? "Certificado a nombre de :" : "Nombre :";
+
+    List<RptConsutaAntecedenteBE> RptConsutaAntecedente = (List<RptConsutaAntecedenteBE>)ViewBag.ConsultaAntecedente;
+
+    int contador = 1;
+
+ 
+    
+
+}
+
+<article>
+    <div id="timer" data-tiempo-restante="@ViewBag.TiempoRestante" data-url="@Url.Action("Salir", "Home")"></div>
+</article>
+<div class="section-certificado text-center">
+    <h3 class="mt-3  ">@ViewBag.mensaje_estado </h3>
+    <br /><br />
+  
+        <h4 class="mb-3 position-relative"><span class="text-color">Tipo de Trámite: </span><br /> @ViewBag.tipo_tramite</h4>
+
+   
+    
+    <h4 class="mb-3 position-relative"><span class="text-color">@title_Nro_tramite </span><br /> @ViewBag.nro_tramite</h4>
+    @if (ViewBag.ViewOptions != 2)
+    {
+        <span>(Tomar en cuenta este número de trámite para el seguimiento y descarga de su certificado) </span>
+    }
+    
+
+    <div class="testimonial-item ">
+        <p class="testimonial-text" style="font-size:40px"> @title_certificado <span>@ViewBag.nombresCompletos</span></p>
+    </div>
+     @if (ViewBag.ViewOptions != 2)
+    {
+        <div class="mb-5">
+            <span>Digitar este numero de registro si posteriormente quiere acceder al certificado desde la opción <strong>"Acceder a Trámite Realizado"</strong> </span>
+
+    </div>
+    }
+    @if (ViewBag.rn_fla_vigencia == 1 || ViewBag.tipo_consulta == 2)
+    {
+        <div class="d-flex align-items-center justify-content-center">
+
+        <strong>@ViewBag.correo_estado </strong> <i class="ti-email color-one text-md pl-2"></i>
+
+        </div>
+    }
+   
+
+    <div class="my-5">
+        @if (ViewBag.ViewOptions != 3 && ViewBag.tipo_consulta !=2)
+        {
+          
+
+            if (ViewBag.rn_fla_vigencia == 1   )
+            {
+
+                <strong>Certificado disponible para descarga </strong>
+
+                // Obtener los arrays desde ViewBag y dividirlos
+                string[] ruta_certificado = ViewBag.ruta_certificado?.Split("~") ?? new string[0];
+                string[] des_tipoantec = ViewBag.tipo_tramite?.Split("-") ?? new string[0];
+                string[] cod_ante = ViewBag.cod_antec?.Split("~") ?? new string[0];
+                string[] mov_antec = ViewBag.nro_tramite?.Split(";") ?? new string[0];
+                string[] fec_expedido = ViewBag.fec_expedido?.Split("~") ?? new string[0];
+                string[] fec_caducidad = ViewBag.fec_caducidad?.Split("~") ?? new string[0];
+
+
+                int[] lengths = {
+                    ruta_certificado.Length,
+                    des_tipoantec.Length,
+                    cod_ante.Length,
+                    mov_antec.Length,
+                    fec_expedido.Length,
+                    fec_caducidad.Length
+                };
+
+
+                bool todasIguales = lengths.All(length => length == lengths[0]);
+                if (todasIguales)
+                {
+                    for (int i = 0; i < ruta_certificado.Length; i++)
+                    {
+                        string rutaInvertida = ruta_certificado[i].Replace(@"\", "/");
+                        string des_mov_antec = "N°" + mov_antec[i];
+
+
+                        <div class="row mt-5 mb-3 d-flex justify-content-center align-items-center">
+
+                            <div class="col col-md-6 text-color">
+                                <button class="btn border-0" onclick='descargarFileFTP("@rutaInvertida","@des_tipoantec[i]",@cod_ante[i],6,"@des_mov_antec")'>
+                                    <img src="~/images/icon/pdf.svg" title="Descargar Certificado" width="50" />
+                                    <strong>@des_tipoantec[i]</strong>
+                                </button>
+                
+
+                            </div>
+                            <div class="col col-md-6 text-left">
+                                <span><strong>Fecha de Expedicion:</strong> @fec_expedido[i] </span>
+                                <br />
+                                <span><strong>Fecha de Caducidad:</strong> @fec_caducidad[i] </span>
+                            </div>
+                        </div>
+
+                    }
+                }
+              
+           
+
+
+                <span class="text-left"><strong>Nota: </strong>El presente Certificado Electrónico se encontrará disponible hasta la fecha de caducidad señalada</span>
+            }
+            else
+            {
+
+
+                <div class="d-flex align-items-center justify-content-center">
+
+                    <strong>CERTIFICADO HA CADUCADO </strong>
+
+                </div>
+
+                <strong>Certificado No disponible para descarga </strong>
+
+                <div class="row mt-5 mb-3 d-flex justify-content-center align-items-center">
+                    <div class="col col-md-6">
+                        <span><strong>Fecha de Expedicion:</strong> @ViewBag.fec_expedido </span>
+
+                    </div>
+                    <div class="col col-md-6 text-left">
+
+
+                        <span><strong>Fecha de Caducidad:</strong> <span class="text-color">@ViewBag.fec_caducidad </span> </span>
+                    </div>
+                </div>
+               
+            }
+        }
+        <div class="pt-4">
+         
+
+            @if (ViewBag.tipo_consulta == 2 && ViewBag.ViewOptions == 2 && ViewBag.fla_genrado == 1 && ViewBag.fla_existe==1)
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="text-uppercase " style="font-size:14px">
+                            <tr>
+                                <th>N°</th>
+                                
+                                <th>Tipo de Reporte</th>
+                                <th>N° de Antecedentes</th>
+                            <th>Fecha de Expedición</th>
+                            <th>Fecha de Caducidad</th>
+                            
+                                <th>Archivo</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+
+                            @for (int i = 0; i < RptConsutaAntecedente.Count + 1; i++)
+                                {
+
+                                string rutaInvertida = "";
+
+                                contador=i+1;
+                             
+                                if (i == RptConsutaAntecedente.Count)
+                                {
+                                    rutaInvertida = RptConsutaAntecedente[0].rs_nombre_oficio.Replace(@"\", "/");
+
+                                    <tr>
+                                        <td>@contador</td>
+
+                                        <td>Oficio</td>
+                                        <td>-</td>
+                                        <td>@RptConsutaAntecedente[0].rd_fec_generacion.ToString("dd/MM/yyyy")</td>
+                                        <td>-</td>
+
+                                        <td>
+                                            <div class=" text-color">
+                                                <button class="btn border-0" onclick='descargarFileFTP("@rutaInvertida","Oficio",0,7,"")'>
+                                                    <img src="~/images/icon/pdf.svg" title="" width="50" />
+
+                                                </button>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int fla_vigencia = RptConsutaAntecedente[i].rn_fla_vigencia;
+                                    string class_vigencia = (fla_vigencia == 1) ? "" : "text-color";
+                                    rutaInvertida = RptConsutaAntecedente[i].rs_nombre_doc.Replace(@"\", "/");
+                                    string des_mov_antec = "N°" + @RptConsutaAntecedente[i].rs_nro_registro + @RptConsutaAntecedente[i].rs_anio;
+                                    <tr>
+                                        <td>@contador</td>
+
+                                        <td>@RptConsutaAntecedente[i].rs_des_tipantec</td>
+                                        <td>@RptConsutaAntecedente[i].rn_cod_antec.ToString().PadLeft(6, '0')  - @RptConsutaAntecedente[i].rs_anio_td</td>
+                                        <td>@RptConsutaAntecedente[i].rd_fec_generacion.ToString("dd/MM/yyyy")</td>
+                                        <td class="@class_vigencia">@RptConsutaAntecedente[i].rd_fec_vigencia.ToString("dd/MM/yyyy")</td>
+
+                                        <td>
+                                            @if(fla_vigencia==1){
+                                            <div class=" text-color">
+                                                    <button class="btn border-0" onclick='descargarFileFTP("@rutaInvertida","@RptConsutaAntecedente[i].rs_des_tipantec",@RptConsutaAntecedente[i].rn_cod_antec,6,"@des_mov_antec")'>
+                                                    <img src="~/images/icon/pdf.svg" title="Descargargar Certificado" width="50" />
+
+                                                </button>
+
+                                                </div>
+                                            }else
+                                            {
+                                                <div class=" text-color" disabled>
+                                                    <button class="btn border-0" disabled>
+                                                        <img src="~/images/icon/pdf.svg" title="" width="50" />
+
+                                                    </button>
+
+                                                </div>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                }
+
+                               
+
+
+                            }
+
+                         
+                        </tbody>
+                    </table>
+                    <span class="text-left"><strong>Nota: </strong>Los presentes Certificados Electrónicos se encontrarán disponibles hasta la fecha de caducidad señalada</span>
+                </div>
+               
+            }
+            else
+            {
+                if (ViewBag.fla_existe == 0 && ViewBag.fla_genrado == 1)
+                {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+
+                                <th>Tipo de Documento</th>
+                                <th>Observación</th>
+                                
+
+                                <th>Archivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (RptConsutaAntecedenteBE row in RptConsutaAntecedente)
+                            {
+                                string rutaInvertida = "";
+
+                                // Reemplazar las barras invertidas con barras normales
+                                rutaInvertida = row.rs_nombre_oficio.Replace(@"\", "/");
+
+          
+
+                                <tr>
+                                    <td>@contador</td>
+
+                                    <td>Oficio</td>
+                                    <td>@row.rs_des_existe</td>
+                                   
+                                    <td>
+                                        <div class=" text-color">
+                                                <button class="btn border-0" onclick='descargarFileFTP("@rutaInvertida","Oficio",0,7,"")'>
+                                                <img src="~/images/icon/pdf.svg" title="" width="70" />
+
+                                            </button>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                contador++;
+                            }
+
+
+
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            }}
+
+            @if (ViewBag.estado_error==-1)
+            {
+                <span class="text-left" style="color:#f7c757"><strong>Nota: </strong> @ViewBag.des_error</span><br />
+
+            }
+          
+            @if (ViewBag.ViewOptions == 1)
+            {
+            
+                <a href="@Url.Action("TipoReporte", "Autenticacion")" class="btn btn-main"> <i class="ti-tag"></i> REALIZAR NUEVO TRÁMITE </a>
+            }
+            @if (ViewBag.ViewOptions == 2)
+            {
+                if (ViewBag.fla_genrado == 1 && ViewBag.rn_fla_vigencia==1)
+                {
+                    <button onclick="mostrar_modal_email()" class="btn btn-main"> <i class="ti-email"></i> REENVIAR CORREO </button>
+                }
+               
+            }
+            <a href="@Url.Action("Salir", "Home")" class="btn btn-outline-dark"> <i class="ti-check color-one "></i> Finalizar </a>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<div class="modal fade" id="correo_reenvio" role="dialog"   tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header  btn-main">
+                <h5 class="modal-title" id="exampleModalLongTitle" style="color:#fff">Importante</h5>
+
+            </div>
+            <form id="form-envio_mail">
+            <div class="modal-body">
+                <div class="container">
+                   
+                        <div class="form-group row ">
+
+                            <label class="col-sm-6 col-form-label ">Correo Envío:  <span class="text-color">(*)</span></label>
+
+                            <div class="col-sm-6">
+                                <input type="email" class="form-control" name="txtEmail" id="txtEmail" onkeyup="mayus(this);">
+                            </div>
+
+                        </div>
+                      
+                   
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-main" >Aceptar</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+    
+        var UrlAuto = {
+            EnviarCorreo: { "link": "@Url.Action("EnviarCorreo", "Autenticacion")" },
+            ObtenerCertificadoFTP: { "link": "@Url.Action("ObtenerCertificadoFTP", "ConsultaTramite")" }
+        };
+
+        window.onload = timer();
+
+        
+        function descargarFileFTP(ruta_doc,nombre_doc,cod_antec,tip_mov,des_mov) {
+
+       
+            var des_movimiento = des_mov.replace(" ","");
+            var url = UrlAuto.ObtenerCertificadoFTP.link + "?nombre_archivo=" + ruta_doc + "&cod_antec=" + cod_antec + "&tipmov_antec=" + tip_mov + "&des_movantec=" + des_movimiento;
+
+            $("#cargando").show();
+
+            fetch(url, {
+                method: 'POST',
+                responseType: 'blob',
+            })
+                .then(response => {
+                    $("#cargando").hide();
+                    if (!response.ok) {
+                        throw new Error('Hubo un problema con la solicitud.');
+                    }
+                   
+                    return response.arrayBuffer(); // Obtener los datos como ArrayBuffer
+                })
+                .then(arrayBuffer => {
+                    // Convertir el ArrayBuffer a un Uint8Array (bytes del archivo PDF)
+                    const pdfBytes = new Uint8Array(arrayBuffer);
+
+                    descargarPDF(pdfBytes, nombre_doc);
+
+                })
+                .catch(error => {
+                    alerta('E', 'Hubo una falla en la descarga del archivo. <br> Actualice e intente nuevamente.');
+                    $("#cargando").hide();
+                });
+                
+        }
+
+        function mostrarPDFEnNuevaVentana(pdfBytes) {
+            const blobUrl = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
+            window.open(blobUrl, '_blank');
+        }
+
+        function descargarPDF(pdfBytes, nombre_doc) {
+            const blobUrl = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
+
+            const link = document.createElement('a');
+            link.href = blobUrl;
+
+     
+            link.download = nombre_doc;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+
+            URL.revokeObjectURL(blobUrl);
+        }
+
+        $('#form-envio_mail').bootstrapValidator({
+            fields: {
+                txtEmail: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Ingrese Correo'
+                        }
+                    }
+                },
+            }
+        }).on('success.form.bv', function (e) {
+            // Detén el envío del formulario
+            e.preventDefault();
+
+            // Ejecuta tu función después de que el formulario ha sido validado correctamente
+            enviar_copia_email();
+        });
+
+        function mostrar_modal_email() {
+            $('#correo_reenvio').modal('toggle');
+            $("#txtEmail").val("");
+
+        }
+        function enviar_copia_email() {
+          
+        
+                var data = {};
+            data.txtEmail = $("#txtEmail").val();
+              
+                $.ajax({
+                    type: 'POST',
+                    url: UrlAuto.EnviarCorreo.link,
+                    data: JSON.stringify(data),
+                    processData: false,
+                    contentType: 'application/json',
+                    beforeSend: function () {
+                        $("#cargando").show();
+                    },
+                    success: function (data) {
+                    $("#cargando").hide();
+                    $('#correo_reenvio').modal('hide');
+
+
+                    if (data.codigo != 0) {
+                                alerta('A', data.valor);
+                    
+                            }else{
+                        alerta('OK', data.valor);
+                            }
+                  
+                    },
+                    error: function (request, status, error) {
+                        $("#cargando").hide();
+                    $('#correo_reenvio').modal('hide');
+                        alerta('E', "Surgió un problema. " + error);
+         
+                    }
+                });
+            
+
+        }
+    </script>
+}
